@@ -15,7 +15,8 @@ args = vars(parser.parse_args())
 def breakdown(pkt):
     if pkt.haslayer(http.HTTPRequest):   
         URL = "http://" + pkt[http.HTTPRequest].Host.decode() + pkt[http.HTTPRequest].Path.decode()
-        print (URL)
+        if("bdimg.share.baidu.com" in URL):
+             print (URL)
 
 # Error check to ensure proper usage of parameters
 if args['external'] == None and args['interface'] == None:
