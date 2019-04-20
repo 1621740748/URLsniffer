@@ -14,8 +14,8 @@ args = vars(parser.parse_args())
 # Look for packets with HTTP info and filter out client and URL info
 def breakdown(pkt):
     if pkt.haslayer(http.HTTPRequest):   
-        URL = "http://" + str(pkt[http.HTTPRequest].Host) + str(pkt[http.HTTPRequest].Path)
-        print ("{3} - {1} [{0}] >> {2}".format(pkt[Ether].src, pkt[IP].src, URL, strftime("[%Y-%m-%d :: %H:%M:%S]", gmtime())))
+        URL = "http://" + pkt[http.HTTPRequest].Host.decode() + pkt[http.HTTPRequest].Path.decode()
+        print (URL)
 
 # Error check to ensure proper usage of parameters
 if args['external'] == None and args['interface'] == None:
