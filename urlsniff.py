@@ -3,7 +3,7 @@
 import argparse
 from time import gmtime, strftime
 from scapy.all import *
-from scapy.layers import http
+from scapy_http import http
 
 # Additional arguments for URL Sniffer
 parser = argparse.ArgumentParser(description='A simple Python tool to sniff URL\'s fron network traffic')
@@ -14,15 +14,15 @@ args = vars(parser.parse_args())
 # Look for packets with HTTP info and filter out client and URL info
 def breakdown(pkt):
     if pkt.haslayer(http.HTTPRequest):   
-        URL = "http://" + pkt[http.HTTPRequest].Host + pkt[http.HTTPRequest].Path
-        print "{3} - {1} [{0}] >> {2}".format(pkt[Ether].src, pkt[IP].src, URL, strftime("[%Y-%m-%d :: %H:%M:%S]", gmtime()))
+        URL = "http://" + str(pkt[http.HTTPRequest].Host) + str(pkt[http.HTTPRequest].Path)
+        print ("{3} - {1} [{0}] >> {2}".format(pkt[Ether].src, pkt[IP].src, URL, strftime("[%Y-%m-%d :: %H:%M:%S]", gmtime())))
 
 # Error check to ensure proper usage of parameters
 if args['external'] == None and args['interface'] == None:
-    print "One input source is needed to run"
+    print ("One input source is needed to run")
     quit()
 if args['external'] != None and args['interface'] != None:
-    print "Only one input source can be used at a time"
+    print ("Only one input source can be used at a time")
     quit()
 
 # Open external pcap file if one is provided
